@@ -33,8 +33,28 @@ public class UserService {
 		return uRep.insert(user);
 	}
 	
+	public void delete(String id) {
+		findById(id);  //tricking to throw ObjectNotFoundException if does't exist. But "deleteById" already throws IllegalArgumentException - in case the given id is null
+		uRep.deleteById(id);
+	}
+	
+	public User update(User user) {
+		User newUser = findById(user.getId());
+		updateObj(newUser, user);
+		return uRep.save(newUser);
+	}
+	
 	public User fromDTO(NewUserDTO userDTO) {
 		return new User(userDTO.getId(),userDTO.getName(),userDTO.getEmail(),userDTO.getPassword());
 	}
+	
+	private void updateObj(User newUser, User user) {
+		newUser.setName(user.getName());
+		newUser.setEmail(user.getEmail());
+		newUser.setPassword(user.getPassword());
+	}
+	
+	
+	
 	
 }

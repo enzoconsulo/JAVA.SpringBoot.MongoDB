@@ -6,9 +6,11 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -41,7 +43,7 @@ public class UserResource {
 	}
 	
 	@PostMapping
-	public ResponseEntity<User> insert(@RequestBody NewUserDTO userDTO){
+	public ResponseEntity<Void> insert(@RequestBody NewUserDTO userDTO){
 		User temp = uService.fromDTO(userDTO);
 		temp = uService.insert(temp);
 		URI uri = ServletUriComponentsBuilder
@@ -52,8 +54,18 @@ public class UserResource {
 		return ResponseEntity.created(uri).build();		
 	}
 
+	@DeleteMapping(value = "/{id}")
+	public ResponseEntity<Void> delete(@PathVariable String id){
+		uService.delete(id);
+		return ResponseEntity.noContent().build();
+	}
 	
-	
-	
+	@PutMapping(value = "/{id}")
+	public ResponseEntity<Void> update(@PathVariable String id, @RequestBody NewUserDTO user){	
+		User u = uService.fromDTO(user);
+		u.setId(id);
+		uService.update(u);
+		return ResponseEntity.noContent().build();
+	}
 	
 }
