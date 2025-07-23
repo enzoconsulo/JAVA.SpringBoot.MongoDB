@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.enzoccs.springbootmongodb.domain.User;
+import com.enzoccs.springbootmongodb.dto.NewUserDTO;
 import com.enzoccs.springbootmongodb.repositories.UserRepository;
 import com.enzoccs.springbootmongodb.services.exceptions.ObjectNotFoundException;
 
@@ -27,4 +28,13 @@ public class UserService {
 							//   V
 						//empty parameters to Supplier 
 	}
+	
+	public User insert(User user) {
+		return uRep.insert(user);
+	}
+	
+	public User fromDTO(NewUserDTO userDTO) {
+		return new User(userDTO.getId(),userDTO.getName(),userDTO.getEmail(),userDTO.getPassword());
+	}
+	
 }

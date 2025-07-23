@@ -1,5 +1,6 @@
 package com.enzoccs.springbootmongodb.resources;
 
+import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -7,10 +8,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.enzoccs.springbootmongodb.domain.User;
+import com.enzoccs.springbootmongodb.dto.NewUserDTO;
 import com.enzoccs.springbootmongodb.dto.UserDTO;
 import com.enzoccs.springbootmongodb.services.UserService;
 
@@ -34,6 +39,21 @@ public class UserResource {
 		UserDTO uDTO = new UserDTO(u);
 		return ResponseEntity.ok().body(uDTO);
 	}
+	
+	@PostMapping
+	public ResponseEntity<User> insert(@RequestBody NewUserDTO userDTO){
+		User temp = uService.fromDTO(userDTO);
+		temp = uService.insert(temp);
+		URI uri = ServletUriComponentsBuilder
+					.fromCurrentRequest()
+					.path("/{id}")
+					.buildAndExpand(temp.getId())
+					.toUri();
+		return ResponseEntity.created(uri).build();		
+	}
 
+	
+	
+	
 	
 }
