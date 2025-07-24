@@ -1,5 +1,6 @@
 package com.enzoccs.springbootmongodb.services;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,5 +32,10 @@ public class PostService {
 	public List<Post> findByTitle(String search){
 		//return pRep.findByTitleContainingIgnoreCase(search);			//just to test and illustrate
 		return pRep.seachTitle(search); 							
+	}
+	
+	public List<Post> fullSearch(String search, Date min, Date max){
+		max = new Date(max.getTime() + 24 * 60 * 60 * 1000); //add 1 hour on maxDate to get next day. (better to filter between min and max)
+		return pRep.fullSearch(search, min, max);
 	}
 }
