@@ -27,4 +27,8 @@ public class PostService {
 							//   V
 						//empty parameters to Supplier 
 	}
+	
+	public List<Post> findByTitle(String search){
+		return pRep.findByTitleContainingIgnoreCase(search);
+	}
 }
