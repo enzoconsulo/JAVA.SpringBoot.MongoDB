@@ -11,6 +11,8 @@ import org.springframework.context.annotation.Configuration;
 import com.enzoccs.springbootmongodb.domain.Post;
 import com.enzoccs.springbootmongodb.domain.User;
 import com.enzoccs.springbootmongodb.dto.AuthorDTO;
+import com.enzoccs.springbootmongodb.dto.CommentDTO;
+import com.enzoccs.springbootmongodb.dto.UserDTO;
 import com.enzoccs.springbootmongodb.repositories.PostRepository;
 import com.enzoccs.springbootmongodb.repositories.UserRepository;
 
@@ -46,6 +48,16 @@ public class Instantiation implements CommandLineRunner{
 		enzo.getPosts().add(post1);
 		enzo.getPosts().add(post2);
 		userRepository.save(enzo);
+		
+		CommentDTO comment1 = new CommentDTO("GoodLuck on your journey", sdf.parse("21/07/2025"), new UserDTO(alex));
+		CommentDTO comment2 = new CommentDTO("Nice! Show us the results!", sdf.parse("21/07/2025"), new UserDTO(maria));
+		CommentDTO comment3 = new CommentDTO("Wow! Thats rlly good", sdf.parse("23/07/2025"), new UserDTO(maria));
+		
+		post1.getComments().add(comment1);
+		post1.getComments().add(comment2);
+		post2.getComments().add(comment3);
+		
+		postRepository.saveAll(Arrays.asList(post1,post2));
 	}
 
 }
