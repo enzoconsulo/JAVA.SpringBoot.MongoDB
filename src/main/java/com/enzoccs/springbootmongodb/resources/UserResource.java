@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.enzoccs.springbootmongodb.domain.Post;
 import com.enzoccs.springbootmongodb.domain.User;
 import com.enzoccs.springbootmongodb.dto.NewUserDTO;
 import com.enzoccs.springbootmongodb.dto.UserDTO;
@@ -40,6 +41,12 @@ public class UserResource {
 		User u = uService.findById(id);
 		UserDTO uDTO = new UserDTO(u);
 		return ResponseEntity.ok().body(uDTO);
+	}
+
+	@GetMapping(value = "/{id}/posts")
+	public ResponseEntity<List<Post>> findPostsById(@PathVariable String id){
+		User u = uService.findById(id);
+		return ResponseEntity.ok().body(u.getPosts());
 	}
 	
 	@PostMapping
@@ -67,5 +74,7 @@ public class UserResource {
 		uService.update(u);
 		return ResponseEntity.noContent().build();
 	}
+	
+	
 	
 }
